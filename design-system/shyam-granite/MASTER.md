@@ -152,8 +152,11 @@ Content blocks (`content.blocks`, rendered by `<x-blocks.render>`; sections alte
 | `locations` | `title`, `intro?` (both locations) |
 | `contact` | `title`, `intro?` (contact methods + maps) |
 | `faq-groups` | `groups[{title, items[{question, answer}]}]` |
+| `enquiry-form` | `title`, `intro?` (contact form) |
 
 Page fields: `parent` (breadcrumb + hub linking, independent of URL), `seo_title` (≤ 60, generated if omitted), `meta_description` (≤ 155, generated if omitted), `summary` (card text), `photo`, `faqs` (`[question, answer]` pairs), `published` (false hides a page and removes it from the sitemap), `noindex`. Variety pages take `content.specs`, `content.body`, `content.pairs`, `content.similar`. `content.schema` picks JSON-LD (`service`, `area`, `about`, `contact`); `content.product` names the item in the WhatsApp message (`null` for none).
+
+**Admin panel** (`/admin`, Filament 5): pages are edited under Website › Pages, where the "Sections" builder mirrors the blocks above. `PageSeeder` only creates pages that are missing, so it never overwrites admin edits; `PageContentResetSeeder` deliberately re-applies the content files. The contact form (`enquiry-form` block, on /contact) stores enquiries under Contact form › Enquiries and sends the admin and customer emails from Contact form › Email templates, using the SMTP details in Contact form › Mail settings.
 
 Every link in content must resolve to a page; `tests/Feature/SiteContentTest.php` enforces this, the SEO length limits, unique titles, and no prices, GST numbers or em dashes.
 

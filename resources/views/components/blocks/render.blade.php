@@ -47,6 +47,9 @@
                 @case('faq-groups')
                     <x-blocks.faq-groups :block="$block" />
                     @break
+                @case('enquiry-form')
+                    <x-blocks.enquiry-form :block="$block" />
+                    @break
             @endswitch
         </div>
     </section>

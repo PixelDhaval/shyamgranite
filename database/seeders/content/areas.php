@@ -10,7 +10,7 @@
 $area = fn (array $page): array => [
     'template' => 'page',
     ...$page,
-    'content' => ['schema' => 'area', 'product' => null, ...$page['content']],
+    'content' => ['schema' => 'area', 'generic_cta' => true, ...$page['content']],
 ];
 
 $visitBlock = [

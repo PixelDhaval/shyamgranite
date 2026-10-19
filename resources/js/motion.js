@@ -37,14 +37,15 @@ export function initMotion() {
     const mm = gsap.matchMedia();
 
     mm.add(MOTION_OK, () => {
-        const playHeroIntro = buildHeroIntro();
+        // Each part is isolated: if one throws, the rest still run and content is shown.
+        const playHeroIntro = safely('hero intro', buildHeroIntro) ?? (() => {});
 
-        playPreloader(playHeroIntro);
-        initSplitHeadings();
-        initImageReveals();
-        initReveals();
-        initParallax();
-        initHeaderAutoHide();
+        safely('preloader', () => playPreloader(playHeroIntro));
+        safely('split headings', initSplitHeadings);
+        safely('image reveals', initImageReveals);
+        safely('reveals', initReveals);
+        safely('parallax', initParallax);
+        safely('header', initHeaderAutoHide);
 
         document.fonts?.ready.then(() => ScrollTrigger.refresh());
     });
@@ -56,6 +57,32 @@ export function initMotion() {
     initSmoothAnchors();
 
     window.sgMotionReady = true;
+}
+
+/**
+ * Runs one part of the motion setup. If it throws, the error is logged and
+ * every animated element is shown, so a failure can never leave content hidden.
+ */
+function safely(name, setup) {
+    try {
+        return setup();
+    } catch (error) {
+        console.error(`[motion] ${name} failed`, error);
+        revealEverything();
+
+        return undefined;
+    }
+}
+
+function revealEverything() {
+    document.documentElement.classList.remove('sg-motion');
+    document.querySelector('[data-preloader]')?.remove();
+
+    gsap.set(
+        '[data-hero-title], [data-hero-item], [data-hero-media], [data-hero-accent], [data-split], [data-reveal], [data-reveal-image], .split-line',
+        { clearProps: 'opacity,visibility,transform,clipPath' },
+    );
+    gsap.set('[data-reveal-image] img, [data-hero-media] img', { clearProps: 'transform,transition' });
 }
 
 /**
@@ -213,7 +240,7 @@ function initSplitHeadings() {
                     duration: 1.2,
                     ease: 'expo.out',
                     stagger: 0.1,
-                    scrollTrigger: { trigger: heading, start: 'top 88%', once: true },
+                    scrollTrigger: { trigger: heading, start: 'top 88%' },
                 });
             },
         });
@@ -232,7 +259,7 @@ function initImageReveals() {
         gsap.set(photo, { scale: 1.25, transition: 'none' });
 
         gsap.timeline({
-            scrollTrigger: { trigger: wrapper, start: 'top 88%', once: true },
+            scrollTrigger: { trigger: wrapper, start: 'top 88%' },
             onComplete: () => {
                 gsap.set(wrapper, { clearProps: 'clipPath' });
 
@@ -261,7 +288,6 @@ function initReveals() {
 
     ScrollTrigger.batch(items, {
         start: 'top 90%',
-        once: true,
         onEnter: (batch) => gsap.to(batch, {
             autoAlpha: 1,
             y: 0,

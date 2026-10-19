@@ -17,7 +17,7 @@ return [
         'intro' => 'Shyam Granite supplies and processes granite, marble, Kota stone and sandstone for homes, temples, offices and commercial projects across Kutch.',
         'photo' => 'marble-white',
         'content' => [
-            'product' => null,
+            'generic_cta' => true,
             'schema' => 'about',
             'blocks' => [
                 [
@@ -84,7 +84,7 @@ return [
         'summary' => 'Phone, WhatsApp, email, both addresses and opening hours.',
         'intro' => 'Call or WhatsApp us for today’s rate, or visit the showroom on Rambaug Road to see the slabs in person. The showroom is open on Sunday mornings too.',
         'content' => [
-            'product' => null,
+            'generic_cta' => true,
             'schema' => 'contact',
             'local_business' => true,
             'hide_cta' => true,
@@ -95,15 +95,9 @@ return [
                     'intro' => 'Most customers start on WhatsApp. Send a photo or the stone name and we reply with the rate and what is in stock.',
                 ],
                 [
-                    'type' => 'features',
-                    'title' => 'What to send for a quick rate',
-                    'intro' => 'The more of these you include, the faster and more accurate our reply.',
-                    'items' => [
-                        ['icon' => 'stack', 'title' => 'The stone', 'text' => 'Name or colour (for example Black Galaxy or Statuario), or a photo of what you like.'],
-                        ['icon' => 'ruler', 'title' => 'Measurements', 'text' => 'Length and width of each piece, or a simple sketch of the kitchen platform, steps or floor.'],
-                        ['icon' => 'sparkle', 'title' => 'Finish and edge', 'text' => 'Polished, honed, leather, flamed or lapotra, and the edge profile you want if it is a top.'],
-                        ['icon' => 'map-pin', 'title' => 'Your town', 'text' => 'Where the stone is going in Kutch, so we can plan your order.'],
-                    ],
+                    'type' => 'enquiry-form',
+                    'title' => 'Send us an enquiry',
+                    'intro' => 'Tell us what you are planning and we will get back to you with today’s rate and what is in stock.',
                 ],
             ],
         ],
@@ -124,7 +118,7 @@ return [
         'intro' => 'Answers to the questions customers ask us most often, from rates and finishes to processing and visiting the showroom.',
         'photo' => null,
         'content' => [
-            'product' => null,
+            'generic_cta' => true,
             'blocks' => [
                 [
                     'type' => 'faq-groups',
@@ -190,7 +184,7 @@ return [
         // Placeholder photos until the photo day; keep out of search until real work is shown.
         'noindex' => true,
         'content' => [
-            'product' => null,
+            'generic_cta' => true,
             'blocks' => [
                 ['type' => 'photos', 'title' => 'Kitchens', 'items' => ['kitchen-hero', 'kitchen-island', 'kitchen-marble-island', 'sink-composite', 'marble-counter']],
                 ['type' => 'photos', 'title' => 'Floors and stairs', 'items' => ['marble-floor', 'lobby-floor', 'stone-staircase', 'kota-floor', 'tiles-grey']],
@@ -211,7 +205,7 @@ return [
         // No guides published yet; index once the first posts go live.
         'noindex' => true,
         'content' => [
-            'product' => null,
+            'generic_cta' => true,
             'blocks' => [
                 [
                     'type' => 'features',

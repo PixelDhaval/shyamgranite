@@ -10,12 +10,19 @@ use Illuminate\Support\Str;
  * Seeds every public page from the content files in database/seeders/content.
  *
  * Files load in FILES order and a page's parent must appear before it.
- * Pages are matched by path, so re-running the seeder updates content in
- * place. Missing SEO titles and meta descriptions are generated within
- * the strategy limits (60 and 155 characters).
+ * Pages are matched by path. By default only missing pages are created, so
+ * edits made in the admin panel are never overwritten; run
+ * PageContentResetSeeder to deliberately re-apply the files to every page.
+ * Missing SEO titles and meta descriptions are generated within the
+ * strategy limits (60 and 155 characters).
  */
 class PageSeeder extends Seeder
 {
+    /**
+     * Overwrite existing pages with the content files.
+     */
+    protected bool $overwrite = false;
+
     /**
      * @var list<string>
      */
@@ -50,6 +57,12 @@ class PageSeeder extends Seeder
         $parentId = isset($entry['parent'])
             ? Page::query()->where('path', $entry['parent'])->value('id')
             : null;
+
+        $existing = Page::query()->where('path', $entry['path'])->exists();
+
+        if ($existing && ! $this->overwrite) {
+            return;
+        }
 
         Page::query()->updateOrCreate(
             ['path' => $entry['path']],

@@ -2,11 +2,14 @@
     Generic content page: header, content blocks, FAQs, rate CTA.
     Used for product lines (Kota stone, sinks, supplies), Shilp Kala items,
     services, shop-by-use, area pages and core pages (About, Contact, FAQ).
-    content.product names the item in the WhatsApp message; set it to null
-    for pages that are not about one product.
+    content.product names the item in the WhatsApp message (defaults to the
+    page name); content.generic_cta uses a general message instead, for
+    pages that are not about one product.
 --}}
 @php
-    $product = array_key_exists('product', $page->content ?? []) ? $page->content['product'] : $page->name;
+    $product = ($page->content['generic_cta'] ?? false)
+        ? null
+        : (filled($page->content['product'] ?? null) ? $page->content['product'] : $page->name);
 @endphp
 
 <x-layouts.page :page="$page">
