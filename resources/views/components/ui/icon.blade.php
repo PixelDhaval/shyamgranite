@@ -1,0 +1,1 @@
+<svg {{ $attributes->class(['shrink-0'])->merge(['xmlns' => 'http://www.w3.org/2000/svg', 'viewBox' => '0 0 256 256', 'fill' => 'currentColor', 'focusable' => 'false']) }} @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif>{!! $svgBody() !!}</svg>

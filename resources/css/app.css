@@ -2,8 +2,273 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../../config/*.php';
+
+/*
+|--------------------------------------------------------------------------
+| Shyam Granite design system
+|--------------------------------------------------------------------------
+| Full reference: design-system/shyam-granite/MASTER.md
+|
+| Layer 1  Primitives: forest (logo green #4ca58d), gold (logo #d99c28),
+|          stone (neutral, faintly green-tinted to sit with the logo).
+| Layer 2  Semantic tokens (--sg-*), light theme only.
+| Layer 3  Tailwind utilities generated from the semantic tokens:
+|          bg-canvas, bg-surface, text-ink, text-ink-soft, border-line,
+|          bg-brand, text-on-brand, text-accent ...
+*/
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+
+    /* Forest: brand green, scale built around the logo's #4ca58d (500) */
+    --color-forest-50: oklch(0.975 0.012 170);
+    --color-forest-100: oklch(0.948 0.026 170);
+    --color-forest-200: oklch(0.9 0.05 170);
+    --color-forest-300: oklch(0.83 0.075 170);
+    --color-forest-400: oklch(0.74 0.095 170);
+    --color-forest-500: #4ca58d;
+    --color-forest-600: oklch(0.55 0.09 170);
+    --color-forest-700: oklch(0.47 0.078 170);
+    --color-forest-800: oklch(0.38 0.062 170);
+    --color-forest-900: oklch(0.29 0.045 170);
+    --color-forest-950: oklch(0.2 0.03 170);
+
+    /* Gold: the logo's peacock-feather accent, used sparingly */
+    --color-gold-200: oklch(0.92 0.06 82);
+    --color-gold-300: oklch(0.86 0.1 80);
+    --color-gold-400: #d99c28;
+    --color-gold-600: oklch(0.6 0.12 70);
+    --color-gold-700: oklch(0.5 0.1 66);
+
+    /* Stone: neutrals */
+    --color-stone-50: oklch(0.985 0.002 170);
+    --color-stone-100: oklch(0.963 0.004 170);
+    --color-stone-200: oklch(0.925 0.005 170);
+    --color-stone-300: oklch(0.87 0.006 170);
+    --color-stone-400: oklch(0.71 0.007 170);
+    --color-stone-500: oklch(0.56 0.008 170);
+    --color-stone-600: oklch(0.46 0.009 170);
+    --color-stone-700: oklch(0.37 0.01 170);
+    --color-stone-800: oklch(0.27 0.01 170);
+    --color-stone-900: oklch(0.21 0.01 170);
+    --color-stone-950: oklch(0.165 0.008 170);
+
+    --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+    --animate-fade-up: fade-up 0.5s var(--ease-out-soft) both;
+
+    @keyframes fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Semantic tokens: the site uses a single light theme */
+:root {
+    --sg-canvas: var(--color-stone-50);
+    --sg-surface: oklch(0.995 0.001 170);
+    --sg-surface-muted: var(--color-stone-100);
+    --sg-surface-tint: var(--color-forest-50);
+    --sg-ink: var(--color-stone-950);
+    --sg-ink-soft: var(--color-stone-600);
+    --sg-line: var(--color-stone-200);
+    --sg-line-strong: var(--color-stone-300);
+    --sg-brand: var(--color-forest-700);
+    --sg-brand-hover: var(--color-forest-800);
+    --sg-on-brand: oklch(0.99 0.004 170);
+    --sg-brand-ink: var(--color-forest-700);
+    --sg-accent: var(--color-gold-400);
+    --sg-accent-ink: var(--color-gold-700);
+    --sg-shadow: oklch(0.29 0.045 170 / 0.08);
+
+    color-scheme: light;
+}
+
+@theme inline {
+    --color-canvas: var(--sg-canvas);
+    --color-surface: var(--sg-surface);
+    --color-surface-muted: var(--sg-surface-muted);
+    --color-surface-tint: var(--sg-surface-tint);
+    --color-ink: var(--sg-ink);
+    --color-ink-soft: var(--sg-ink-soft);
+    --color-line: var(--sg-line);
+    --color-line-strong: var(--sg-line-strong);
+    --color-brand: var(--sg-brand);
+    --color-brand-hover: var(--sg-brand-hover);
+    --color-on-brand: var(--sg-on-brand);
+    --color-brand-ink: var(--sg-brand-ink);
+    --color-accent: var(--sg-accent);
+    --color-accent-ink: var(--sg-accent-ink);
+    --color-shadow: var(--sg-shadow);
+}
+
+@layer base {
+    /* No CSS smooth scrolling: it fights GSAP ScrollTrigger/ScrollTo; in-page links are tweened in resources/js/motion.js */
+    html {
+        scroll-padding-top: 6rem;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-canvas font-sans text-base leading-relaxed text-ink antialiased;
+    }
+
+    h1,
+    h2,
+    h3 {
+        @apply font-display font-medium text-ink;
+        text-wrap: balance;
+    }
+
+    p {
+        text-wrap: pretty;
+    }
+
+    ::selection {
+        @apply bg-forest-200 text-forest-950;
+    }
+
+    :focus-visible {
+        @apply rounded-sm outline-2 outline-offset-2 outline-brand;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        ::before,
+        ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+}
+
+/*
+| Z-index scale: 30 back-to-top, 40 sticky header + mobile action bar,
+| 60 preloader, 70 skip link. The mobile menu uses the <dialog> top layer.
+*/
+
+/*
+| Motion (resources/js/motion.js). .sg-motion is set in <head> only when the
+| visitor allows motion, so animated elements start hidden instead of
+| flashing before GSAP takes over. It is removed again if GSAP has not
+| started within 3s, so content can never stay hidden.
+*/
+.sg-motion [data-hero-title],
+.sg-motion [data-hero-item],
+.sg-motion [data-hero-media],
+.sg-motion [data-hero-accent],
+.sg-motion [data-split],
+.sg-motion [data-reveal],
+.sg-motion [data-reveal-image] {
+    visibility: hidden;
+}
+
+/* SplitText measures real line breaks; balanced wrapping fights it */
+[data-hero-title],
+[data-split] {
+    text-wrap: pretty;
+}
+
+/* Masked lines get room for Cormorant's descenders (g, y, p) */
+.split-line-mask {
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+}
+
+/* Preloader: once per session, removed on load, CSS failsafe after 3s */
+.preloader {
+    animation: preloader-failsafe 0.4s ease 3s forwards;
+}
+
+.preloader.is-done {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sg-skip-preloader .preloader {
+    display: none;
+}
+
+.preloader-mark {
+    animation: preloader-breathe 1.8s ease-in-out infinite;
+}
+
+.preloader-line {
+    animation: preloader-line 1.2s var(--ease-out-soft) both;
+}
+
+@keyframes preloader-breathe {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: scale(0.97);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes preloader-line {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes preloader-failsafe {
+    to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+@keyframes menu-in {
+    from {
+        opacity: 0;
+        transform: translateX(1.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Page-width container: 16px gutter on phones, 1280px max */
+@utility shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+/* Vertical rhythm for page sections */
+@utility section-y {
+    @apply py-16 md:py-24;
+}
+
+/* Long-form copy from the content team */
+@utility prose-stone {
+    @apply max-w-[65ch] text-ink-soft;
+
+    & p + p {
+        @apply mt-4;
+    }
+
+    & strong {
+        @apply font-semibold text-ink;
+    }
+
+    & a {
+        @apply text-brand-ink underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-brand-ink;
+    }
 }
